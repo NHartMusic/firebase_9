@@ -2,7 +2,10 @@ import { initializeApp } from 'firebase/app'
 import { 
     getFirestore, 
     collection,
-    getDocs
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -23,7 +26,7 @@ const firebaseConfig = {
   //collection ref
   const colRef = collection(db, 'Fincher_Films')
 
-  //get collection data 
+  //realtime collection data 
   getDocs(colRef)
     .then((snapshot) => {
         let films = []
@@ -35,4 +38,33 @@ const firebaseConfig = {
     })
     .catch(err => {
         console.log(err.message)
+    }) 
+
+//adding documents
+const addFilmForm = document.querySelector('.add')
+addFilmForm.addEventListener('submit', (e) => { 
+    e.preventDefault()
+
+    addDoc(colRef, {
+        title: addFilmForm.title.value,
+        mpaa_rating: addFilmForm.mpaa_rating.value,
     })
+    .then(() => {
+        addFilmForm.reset(  )
+    })
+
+})
+
+//deleting documents
+const deleteFilmForm = document.querySelector('.delete')
+deleteFilmForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const docRef = doc(db, 'Fincher_Films ', deleteFilmForm.id.value)
+
+    deleteDoc(docRef)
+        .then(() => {
+             deleteFilmForm.reset()
+        })
+
+})
