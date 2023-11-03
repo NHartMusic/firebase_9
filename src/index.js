@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { 
-    getFirestore, collection
+    getFirestore, 
+    collection,
+    getDocs
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -22,3 +24,15 @@ const firebaseConfig = {
   const colRef = collection(db, 'Fincher_Films')
 
   //get collection data 
+  getDocs(colRef)
+    .then((snapshot) => {
+        let films = []
+
+        snapshot.docs.forEach((doc) => {
+             films.push({ ...doc.data(), id: doc.id })
+        })
+        console.log(films)
+    })
+    .catch(err => {
+        console.log(err.message)
+    })
