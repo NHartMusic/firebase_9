@@ -5,7 +5,9 @@ import {
     onSnapshot,
     addDoc,
     deleteDoc,
-    doc
+    doc,
+    query,
+    where,
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -26,8 +28,11 @@ const db = getFirestore()
 //collection ref
 const colRef = collection(db, 'Fincher_Films')
 
+//queries 
+const q = query(colRef, where("title", "==", "The Social Network"))
+
 //realtime collection data
-onSnapshot(colRef, (snapshot) => {
+onSnapshot(q, (snapshot) => {
     let films = [] 
 
     snapshot.docs.forEach((doc) => {
