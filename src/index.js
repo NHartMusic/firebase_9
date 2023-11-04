@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { 
     getFirestore, 
     collection,
-    getDocs,
+    onSnapshot,
     addDoc,
     deleteDoc,
     doc
@@ -17,28 +17,24 @@ const firebaseConfig = {
     appId: "1:437638549132:web:b900350f78b6747306f5a9"
   }
 
-  //init app 
-  initializeApp(firebaseConfig)
+//init app 
+initializeApp(firebaseConfig)
 
-  //init services 
-  const db = getFirestore()
-  
-  //collection ref
-  const colRef = collection(db, 'Fincher_Films')
+//init services 
+const db = getFirestore()
 
-  //realtime collection data 
-  getDocs(colRef)
-    .then((snapshot) => {
-        let films = []
+//collection ref
+const colRef = collection(db, 'Fincher_Films')
 
-        snapshot.docs.forEach((doc) => {
-             films.push({ ...doc.data(), id: doc.id })
-        })
-        console.log(films)
+//realtime collection data
+onSnapshot(colRef, (snapshot) => {
+    let films = [] 
+
+    snapshot.docs.forEach((doc) => {
+        films.push({ ...doc.data(), id: doc.id })
     })
-    .catch(err => {
-        console.log(err.message)
-    }) 
+    console.log(films)
+})
 
 //adding documents
 const addFilmForm = document.querySelector('.add')
@@ -60,7 +56,7 @@ const deleteFilmForm = document.querySelector('.delete')
 deleteFilmForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    const docRef = doc(db, 'Fincher_Films ', deleteFilmForm.id.value)
+    const docRef = doc(db, 'Fincher_Films', deleteFilmForm.id.value)
 
     deleteDoc(docRef)
         .then(() => {
