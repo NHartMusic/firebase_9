@@ -8,6 +8,7 @@ import {
     doc,
     query,
     where,
+    getDoc,
     orderBy,
     serverTimestamp,
 } from 'firebase/firestore'
@@ -71,5 +72,11 @@ deleteFilmForm.addEventListener('submit', (e) => {
         .then(() => {
              deleteFilmForm.reset()
         })
+})
+ 
+//get a single document 
+const docRef = doc(db, 'Fincher_Films', '457OvSGZEiqpRwsQcKXn')
 
+onSnapshot(docRef, (doc) => {
+    console.log(doc.data(), doc.id  )
 })
