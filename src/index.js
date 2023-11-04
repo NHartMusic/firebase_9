@@ -8,6 +8,8 @@ import {
     doc,
     query,
     where,
+    orderBy,
+    serverTimestamp,
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -27,9 +29,9 @@ const db = getFirestore()
 
 //collection ref
 const colRef = collection(db, 'Fincher_Films')
-
+ 
 //queries 
-const q = query(colRef, where("title", "==", "The Social Network"))
+const q = query(colRef,  orderBy('createdAt'))
 
 //realtime collection data
 onSnapshot(q, (snapshot) => {
@@ -49,6 +51,8 @@ addFilmForm.addEventListener('submit', (e) => {
     addDoc(colRef, {
         title: addFilmForm.title.value,
         mpaa_rating: addFilmForm.mpaa_rating.value,
+        year: addFilmForm.year.value,
+        createdAt: serverTimestamp(),
     })
     .then(() => {
         addFilmForm.reset(  )
