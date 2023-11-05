@@ -9,6 +9,7 @@ import {
     query,
     where,
     getDoc,
+    updateDoc,
     orderBy,
     serverTimestamp,
 } from 'firebase/firestore'
@@ -61,6 +62,22 @@ addFilmForm.addEventListener('submit', (e) => {
 
 })
 
+//updating documents
+const updateForm = document.querySelector('.update')
+updateForm.addEventListener('submit', (e) => {
+    e. preventDefault()
+
+    const docRef = doc(db, 'Fincher_Films', updateForm.id.value)
+
+    updateDoc(docRef, {
+        title: "updated title"
+    })
+    .then(() => {
+        updateForm.reset( )
+    })
+
+})
+
 //deleting documents
 const deleteFilmForm = document.querySelector('.delete')
 deleteFilmForm.addEventListener('submit', (e) => {
@@ -76,7 +93,7 @@ deleteFilmForm.addEventListener('submit', (e) => {
  
 //get a single document 
 const docRef = doc(db, 'Fincher_Films', '457OvSGZEiqpRwsQcKXn')
-
+ 
 onSnapshot(docRef, (doc) => {
     console.log(doc.data(), doc.id  )
 })
